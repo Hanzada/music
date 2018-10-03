@@ -1,0 +1,231 @@
+<!DOCTYPE HTML>
+{% load static %}
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title></title>
+<link href="{% static 'new/css/style.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'new/css/layout.css' %}" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="{% static 'new/css/prettyPhoto.css' %}" type="text/css">
+<script src="{% static 'new/js/jquery.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'new/js/cufon-yui.js' %}" type="text/javascript"></script>
+<script src="{% static 'new/js/cufon-replace.js' %}" type="text/javascript"></script>
+<script type="text/javascript" src="{% static 'new/js/Josefin_Sans_600.font.js' %}"></script>
+<script type="text/javascript" src="{% static 'new/js/Lobster_400.font.js' %}"></script>
+<script type="text/javascript" src="{% static 'new/js/sprites.js' %}"></script>
+<script type="text/javascript" src="{% static 'new/js/jquery.jplayer.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'new/js/gSlider.js' %}"></script>
+<script type="text/javascript" src="{% static 'new/js/jquery.easing.1.3.js' %}"></script>
+<script type="text/javascript" src="{% static 'new/js/jquery.prettyPhoto.js' %}"></script>
+
+<!--[if lt IE 7]> <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;'> <a href="http://www.microsoft.com/windows/internet-explorer/default.aspx?ocid=ie6_countdown_bannercode"><img src="http://www.theie6countdown.com/images/upgrade.jpg" border="0" height="42" width="820" alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today." /></a></div> <![endif]-->
+<!--[if lt IE 9]><script src="js/html5.js" type="text/javascript"></script><![endif]-->
+<!--[if IE]><link href="css/ie_style.css" rel="stylesheet" type="text/css" /><![endif]-->
+</head>
+{% block content %}
+<body id="page1">
+
+
+
+<div id="main">
+	<header>
+		<nav>
+			<ul>
+			<li class="active"><a href="{% url 'index' %}">About</a></li>
+		<li ><a href="{% url 'index1' %}">Audio</a></li>
+		<li><a href="{% url 'index2' %}">Video</a></li>
+		<li><a href="{% url 'index3' %}">Gallery</a></li>
+		<li><a href="{% url 'index4' %}">Authors</a></li>
+		<li><a href="{% url 'index5' %}">Contacts</a></li>
+		</ul>
+	</nav>
+
+	<h1><a href="index.html">Debby </a></h1>
+	<div class="header-slider">
+		<ul>
+		<li>Here you will find many good musicians and their music.</li>
+		<li>There are so many good best photos here</li>
+		<li>There are a lot of videos and clips of the best musicians</li>
+		</ul>
+	</div>
+	<a href="#" class="hs-prev"><img src="{% static 'new/images/prev.png' %}" alt=""></a>
+	<a href="#" class="hs-next"><img src="{% static 'new/images/next.png' %}" alt=""></a>
+	<a href="{% url 'index' %}" class="header-more">Read More</a>
+</header>
+  <div class="tumbvr">
+	<div class="tumbvr-mask"></div>
+	<ul>
+        {% for image in image_list %}
+
+		<li><img src="{{ image.image.url }}" width="586px" height="390px" alt=""></li>
+        {% endfor %}
+
+	</ul>
+  </div>
+  <article id="content">
+	<div class="col-1">
+
+		<div class="p2">
+		<h2>New Photo</h2>
+		<img src="{{ image_list.last }}" class="p1" alt="" width="190 px" height="150px" ></div>
+		<div class="p2">
+		<h2>New Video</h2>
+		<a href="{{ object.get_absolute_url }}" rel="prettyPhoto"><img class="p1" src="" alt=""></a>
+		<div class="alc"> <a href="{{ object.get_absolute_url }}" class="more">Video</a></div>
+		</div>
+        <div class="p2">
+		<h2>New Audio</h2>
+		<a href="{{ last_audio.last.get_absolute_url }}" rel="prettyPhoto"></a>
+		<div class="alc"> <a href="{{ audio.last.get_absolute_url }}" class="more">Audio</a></div>
+		</div>
+	</div>
+
+        <script type="text/javascript">
+
+$(function(){
+	var playItem = 0,
+		title=$('.jp-interface .jp-title'),
+		jPlayer=$("#jplayer"),
+		myPlayList = [
+            {% for audio in audio_list %}
+            	{name:"{{ audio.name }}",mp3:"{{ audio.audio.url }}",autoplay:false},
+            {% endfor %}
+
+		],
+		jPlay=function(idx){
+			if(typeof idx===typeof 0)
+				jPlayer.jPlayer("setMedia",myPlayList[idx]).jPlayer('play')
+			if(typeof idx===typeof '')
+				jPlayer.jPlayer("setMedia",myPlayList[playItem=idx==='next'?(++playItem<myPlayList.length?playItem:0):(--playItem>=0?playItem:myPlayList.length-1)]).jPlayer('play')
+			title.text(myPlayList[playItem].name)
+			Cufon.refresh()
+		}
+
+	jPlayer.jPlayer({
+		ready: function() {
+			jPlay(playItem)
+		},
+		ended:function(){
+			jPlay('next')
+		}
+	})
+
+	$(".jp-prev,.jp-next")
+		.click( function() {
+			jPlay($(this).is('.jp-next')?'next':'prev')
+			return false;
+		})
+
+});
+
+        </script>
+	<div class="col-2">
+        <h2>Audio</h2>
+        {% for audio in audio_list %}
+            <p><a href="{{ audio.get_absolute_url }}">{{ audio.name }}</a></p>
+        {% endfor %}
+        <h2>Video</h2>
+        {% for video in video_list %}
+       <p>    <a href="{{ video.get_absolute_url }}">{{ video.name }}</a></p>
+        {% endfor %}
+        <h2>Authors</h2>
+    {% for author in author_list %}
+    <a href="{{ author.get_absolute_url }}"><h3>{{ author }}</h3></a>
+    {% endfor %}
+
+
+	</div>
+	<div class="col-3">
+		<h2>Latest Add</h2>
+		<div class="und">
+        <p>Last audio</p>
+            <p>Name: {{ audio.last.name }}</p>
+            <p>Author: {{ audio.last.author }}</p>
+              <audio controls>
+    <source src="{{ audio.last.audio.url }}" type="audio/ogg; codecs=vorbis"  controls="controls">
+    <source src="{{ audio.last.audio.url }}" type="audio/mpeg">
+    Тег audio не поддерживается вашим браузером.
+    <a href="{{ audio.audio.url }}">Скачайте музыку</a>.
+  </audio>
+ <p>Last video</p>
+            <p>Name: {{ object.name }}</p>
+            <p>Author: {{ object.author }}</p>
+              <video   controls="controls" loop="loop" width="100%">
+               <source src="{{ object.video.url }}" type="video/mp4" controls>
+                 <source src="{{ object.video.url }}"  type='video/webm' codecs="vp8, vorbis">
+                 <source src="{{ object.video.url }}" type="video/mp4">
+                 <source src="{{ object.video.url }}" type='video/ogg' codecs="theora, vorbis">
+            </video>
+		</div>
+		<h2>Newsletter</h2>
+		<form action="{% url 'index' %}" method="get" id="subscribe" >
+		<fieldset>
+			<label>
+			<input type="search" >
+			</label>
+			<input type="submit" value="">
+		</fieldset>
+		</form>
+		<h2>Find Me</h2>
+		<ul class="soc-ico">
+		<li><a href="#"><img src="{% static 'new/images/facebook.png' %}" alt=""></a></li>
+		<li><a href="#"><img src="{% static 'new/images/twitter.png' %}" alt=""></a></li>
+		<li><a href="#"><img src="{% static 'new/images/myspace.png' %}" alt=""></a></li>
+		<li><a href="#"><img src="{% static 'new/images/linkedin.png' %}" alt=""></a></li>
+		</ul>
+	</div>
+  </article>
+  <div class="af clear"></div>
+</div>
+<footer>
+	<span>
+    	<a href="http://www.templatemonster.com/" target="_blank">Website template</a> designed by TemplateMonster.com<br>
+		<a href="http://www.templates.com/product/illustrations/" target="_blank">Vector Illustration</a> provided by Templates.com
+	</span>
+</footer>
+<script type="text/javascript">
+
+
+
+    Cufon.now()
+$(function(){
+	$('nav,.more,.header-more').sprites()
+
+	$('.header-slider').gSlider({
+		prevBu:'.hs-prev',
+		nextBu:'.hs-next'
+	})
+})
+$(window).load(function(){
+	$('.tumbvr')._fw({tumbvr:{
+		duration:2000,
+		easing:'easeOutQuart'
+	}})
+	.bind('click',function(){
+		location="{% url 'index3' %}"
+	})
+	
+	$('a[rel=prettyPhoto]').each(function(){
+		var th=$(this),
+			pb
+		th
+			.append(pb=$('<span class="playbutt"></span>').css({opacity:.7}))
+		pb
+			.bind('mouseenter',function(){
+				$(this)
+					.stop()
+					.animate({opacity:.9})
+			})
+			.bind('mouseleave',function(){
+				$(this)
+					.stop()
+					.animate({opacity:.7})
+			})
+	})
+	.prettyPhoto({theme:'dark_square'})
+})
+</script>
+
+</body>
+{% endblock %}
+</html>

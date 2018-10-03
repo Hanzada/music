@@ -1,0 +1,125 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block content %}
+
+
+<body id="page6">
+<div id="main">
+	<header>
+		<nav>
+			<ul>
+                <li><a href="{% url 'index' %}">About</a></li>
+		<li ><a href="{% url 'index1' %}">Audio</a></li>
+		<li><a href="{% url 'index2' %}">Video</a></li>
+		<li><a href="{% url 'index3' %}">Gallery</a></li>
+		<li><a href="{% url 'index4' %}">Authors</a></li>
+		<li class="active"><a href="{% url 'index5' %}">Contacts</a></li>
+		</ul>
+	</nav>
+	<h1><a href="{% url 'index' %}">Debby </a></h1>
+	<div class="header-slider">
+		<ul>
+		<li>Here you will find many good musicians and their music.</li>
+		<li>There are so many good best photos here</li>
+		<li>There are a lot of videos and clips of the best musicians</li>
+		</ul>
+	</div>
+	<a href="#" class="hs-prev"><img src="{% static 'new/images/prev.png' %}" alt=""></a>
+	<a href="#" class="hs-next"><img src="{% static 'new/images/next.png' %}" alt=""></a>
+	<a href="{% url 'index' %}" class="header-more">Read More</a>
+</header>
+  <article id="content">
+	<div class="col-1"><div class="p2">
+		<h2>New Photo</h2>
+		<img src="{{ image_list.last }}" class="p1" alt="" width="200px" height="150px" ></div>
+		<div class="p2">
+		<h2>New Video</h2>
+		<a href="{{ object.get_absolute_url }}" rel="prettyPhoto"><img class="p1" src="" alt=""></a>
+		<div class="alc"> <a href="{{ object.get_absolute_url }}" class="more">Video</a></div>
+		</div>
+        <div class="p2">
+		<h2>New Audio</h2>
+		<a href="{{ audio.last.get_absolute_url }}" rel="prettyPhoto"></a>
+		<div class="alc"> <a href="{{ audio.last.get_absolute_url }}" class="more">Audio</a></div>
+		</div>
+	</div>
+	<div class="col-2">
+		<h2>Contact Form</h2>
+		<form action="" id="form1">
+            <fieldset>
+                <label>Your Name:<input type="text"></label>
+                <label>Your E-mail:<input type="email"></label>
+                <label>Your City:<input type="text"></label>
+                <label class="msg">Your Message:<textarea></textarea></label>
+                <div class="btns"><a href="javascript:document.getElementById('form1').reset()" class="more">Clear</a><a href="javascript:document.getElementById('form1').submit()" class="more">Send</a></div>
+            </fieldset>
+		</form>
+	</div>
+	<div class="col-3">
+		<h2>Our Contacts</h2>
+		<ul class="contacts blo">
+		<li><span>Country:</span>USA</li>
+		<li><span>State:</span>California</li>
+		<li><span>City:</span>San Diego</li>
+		<li><span>Telephone:</span>+354 5635600</li>
+		<li><span>Email:</span><a href="#">lilly@mail.com</a></li>
+		</ul>
+		<h2>Miscellaneous</h2>
+		<p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum.</p>
+		<h2>Newsletter</h2>
+		<form action="" id="subscribe">
+		<fieldset>
+			<label>
+			<input type="text">
+			</label>
+			<input type="submit" value="">
+		</fieldset>
+		</form>
+		<h2>Find Me</h2>
+		<ul class="soc-ico">
+		<li><a href="#"><img src="images/facebook.png" alt=""></a></li>
+		<li><a href="#"><img src="images/twitter.png" alt=""></a></li>
+		<li><a href="#"><img src="images/myspace.png" alt=""></a></li>
+		<li><a href="#"><img src="images/linkedin.png" alt=""></a></li>
+		</ul>
+	</div>
+  </article>
+  <div class="af clear"></div>
+</div>
+<footer>
+	<span>
+    	<a href="http://www.templatemonster.com/" target="_blank">Website template</a> designed by TemplateMonster.com<br>
+		<a href="http://www.templates.com/product/illustrations/" target="_blank">Vector Illustration</a> provided by Templates.com
+	</span>
+</footer>
+<script type="text/javascript">Cufon.now()
+$(function(){
+	$('nav,.more,.header-more').sprites()
+
+	$('.header-slider').gSlider({
+		prevBu:'.hs-prev',
+		nextBu:'.hs-next'
+	})
+	
+	$('a[rel=prettyPhoto]').each(function(){
+		var th=$(this),
+			pb
+		th
+			.append(pb=$('<span class="playbutt"></span>').css({opacity:.7}))
+		pb
+			.bind('mouseenter',function(){
+				$(this)
+					.stop()
+					.animate({opacity:.9})
+			})
+			.bind('mouseleave',function(){
+				$(this)
+					.stop()
+					.animate({opacity:.7})
+			})
+	})
+	.prettyPhoto({theme:'dark_square'})
+})
+</script>
+</body>
+{% endblock %}
